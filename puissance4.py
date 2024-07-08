@@ -1,6 +1,6 @@
 """Morpion
 
-command : sudo venv/bin/python3.9 -m morpion
+command : sudo venv/bin/python3.9 -m puissance4
 """
 
 import keyboard
@@ -8,7 +8,14 @@ import subprocess
 
 
 def emptyboard():
-    return [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    return [
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+    ]
 
 
 def printboard(board):
@@ -19,7 +26,7 @@ def printboard(board):
 
 def init():
     board = emptyboard()
-    cursor = [1, 1]
+    cursor = [0, 1]
     return board, cursor
 
 
@@ -28,33 +35,38 @@ def moove_cursor(cursor):
         cursor[1] -= 1
     elif keyboard.is_pressed("d"):
         cursor[1] += 1
-    elif keyboard.is_pressed("z"):
-        cursor[0] -= 1
-    elif keyboard.is_pressed("s"):
-        cursor[0] += 1
-    for i in [0, 1]:
-        if cursor[i] < 0:
-            cursor[i] = 2
-        if cursor[i] > 2:
-            cursor[i] = 0
+    if cursor[1] < 0:
+        cursor[1] = 6
+    if cursor[1] > 6:
+        cursor[1] = 0
     return cursor
 
 
-def save_board(board, cursor, player):
-    board[cursor[0]][cursor[1]] = player[1]
+def drop_token(board, cursor, player):
+    for i in reversed(range(6)):
+        print(i)
+        if board[i][cursor[1]] in [4, 8]:
+            pass
+        else:
+            board[i][cursor[1]] = player[1]
+            break
     printboard(board)
     game = check_endgame(board, player)
     return board, game
 
 
+def check_4_follow(board):
+    if board():
+        pass
+
+
 def check_victory(board, player):
-    for i in range(3):
-        if board[0][i] == board[1][i] == board[2][i] and board[0][i] == player[1]:
-            print(f"{player[0]} win")
-            return 1
-        if board[i][0] == board[i][1] == board[i][2] and board[i][0] == player[1]:
-            print(f"{player[0]} win")
-            return 1
+    for i in range(5):
+        for j in range(6):
+            # horizontal
+            # vertival
+            # diagonal
+            pass
 
 
 def check_draw(board):
@@ -76,7 +88,7 @@ def check_endgame(board, player):
 def player_turn(turn):
     if turn % 2 == 0:
         player = "player 1"
-        player_piece = 4
+        player_piece = 3
     else:
         player = "player 2"
         player_piece = 8
@@ -98,7 +110,7 @@ def main():
         if touch.name == "esc":
             game = 1
         elif keyboard.is_pressed("enter"):
-            board, game = save_board(board, cursor, player)
+            board, game = drop_token(board, cursor, player)
             turn += 1
         else:
             if board[cursor[0]][cursor[1]] not in [4, 8]:
