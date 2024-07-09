@@ -60,12 +60,12 @@ def check_victory(board, player):
         if board[i][0] == board[i][1] == board[i][2] and board[i][0] == player[1]:
             print(f"{player[0]} win")
             return 1
-    # if board[0][0] == board[1][1] == board[2][2] and board[0][0] == player[1]:
-    #     print(f"{player[0]} win")
-    #     return 1
-    # if board[0][2] == board[1][1] == board[2][0] and board[0][2] == player[1]:
-    #     print(f"{player[0]} win")
-    #     return 1
+    if board[0][0] == board[1][1] == board[2][2] and board[0][0] == player[1]:
+        print(f"{player[0]} win")
+        return 1
+    if board[0][2] == board[1][1] == board[2][0] and board[0][2] == player[1]:
+        print(f"{player[0]} win")
+        return 1
 
 
 def check_draw(board):
