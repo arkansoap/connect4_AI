@@ -40,11 +40,16 @@ def moove_cursor(cursor):
     return cursor
 
 
-def save_board(board, cursor, player):
+def save_board(board, cursor, player, turn):
+    if board[cursor[0]][cursor[1]] in [4, 8]:
+        print("Case already played")
+        turn -= 1
+        game = 0
+        return board, game, turn
     board[cursor[0]][cursor[1]] = player[1]
     printboard(board)
     game = check_endgame(board, player)
-    return board, game
+    return board, game, turn
 
 
 def check_victory(board, player):
@@ -55,6 +60,12 @@ def check_victory(board, player):
         if board[i][0] == board[i][1] == board[i][2] and board[i][0] == player[1]:
             print(f"{player[0]} win")
             return 1
+    # if board[0][0] == board[1][1] == board[2][2] and board[0][0] == player[1]:
+    #     print(f"{player[0]} win")
+    #     return 1
+    # if board[0][2] == board[1][1] == board[2][0] and board[0][2] == player[1]:
+    #     print(f"{player[0]} win")
+    #     return 1
 
 
 def check_draw(board):
@@ -98,7 +109,7 @@ def main():
         if touch.name == "esc":
             game = 1
         elif keyboard.is_pressed("enter"):
-            board, game = save_board(board, cursor, player)
+            board, game, turn = save_board(board, cursor, player, turn)
             turn += 1
         else:
             if board[cursor[0]][cursor[1]] not in [4, 8]:
