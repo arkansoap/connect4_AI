@@ -45,7 +45,7 @@ def moove_cursor(cursor):
 def drop_token(board, cursor, player):
     for i in reversed(range(6)):
         print(i)
-        if board[i][cursor[1]] in [4, 8]:
+        if board[i][cursor[1]] in [3, 8]:
             pass
         else:
             board[i][cursor[1]] = player[1]
@@ -64,9 +64,35 @@ def check_victory(board, player):
     for i in range(5):
         for j in range(6):
             # horizontal
+            if j >= 2:
+                if (
+                    board[i][j] == player[1]
+                    and board[i][j + 1] == player[1]
+                    and board[i][j + 2] == player[1]
+                    and board[i][j + 3] == player[1]
+                ):
+                    print(f"{player[0]} win")
+                    return 1
             # vertival
+            if i >= 1:
+                if (
+                    board[i][j] == player[1]
+                    and board[i + 1][j] == player[1]
+                    and board[i + 2][j] == player[1]
+                    and board[i + 3][j] == player[1]
+                ):
+                    print(f"{player[0]} win")
+                    return 1
             # diagonal
-            pass
+            if i >= 1 and j >= 2:
+                if (
+                    board[i][j] == player[1]
+                    and board[i + 1][j + 1] == player[1]
+                    and board[i + 2][j + 2] == player[1]
+                    and board[i + 3][j + 3] == player[1]
+                ):
+                    print(f"{player[0]} win")
+                    return 1
 
 
 def check_draw(board):
@@ -113,10 +139,10 @@ def main():
             board, game = drop_token(board, cursor, player)
             turn += 1
         else:
-            if board[cursor[0]][cursor[1]] not in [4, 8]:
+            if board[cursor[0]][cursor[1]] not in [3, 8]:
                 board[cursor[0]][cursor[1]] = 0
             cursor = moove_cursor(cursor)
-            if board[cursor[0]][cursor[1]] not in [4, 8]:
+            if board[cursor[0]][cursor[1]] not in [3, 8]:
                 board[cursor[0]][cursor[1]] = 1
             printboard(board)
 
