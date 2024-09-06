@@ -61,10 +61,10 @@ def check_4_follow(board):
 
 
 def check_victory(board, player):
-    for i in range(5):
-        for j in range(6):
+    for i in range(6):  # Assuming board height is 6
+        for j in range(7):  # Assuming board width is 7
             # horizontal
-            if j >= 2:
+            if j <= 3:  # Adjust to prevent out-of-range
                 if (
                     board[i][j] == player[1]
                     and board[i][j + 1] == player[1]
@@ -73,8 +73,8 @@ def check_victory(board, player):
                 ):
                     print(f"{player[0]} win")
                     return 1
-            # vertival
-            if i >= 1:
+            # vertical
+            if i <= 2:  # Adjust to prevent out-of-range
                 if (
                     board[i][j] == player[1]
                     and board[i + 1][j] == player[1]
@@ -83,13 +83,23 @@ def check_victory(board, player):
                 ):
                     print(f"{player[0]} win")
                     return 1
-            # diagonal
-            if i >= 1 and j >= 2:
+            # diagonal (bottom-left to top-right)
+            if i <= 2 and j <= 3:  # Adjust to prevent out-of-range
                 if (
                     board[i][j] == player[1]
                     and board[i + 1][j + 1] == player[1]
                     and board[i + 2][j + 2] == player[1]
                     and board[i + 3][j + 3] == player[1]
+                ):
+                    print(f"{player[0]} win")
+                    return 1
+            # diagonal (top-left to bottom-right)
+            if i >= 3 and j <= 3:  # Adjust to prevent out-of-range
+                if (
+                    board[i][j] == player[1]
+                    and board[i - 1][j + 1] == player[1]
+                    and board[i - 2][j + 2] == player[1]
+                    and board[i - 3][j + 3] == player[1]
                 ):
                     print(f"{player[0]} win")
                     return 1
