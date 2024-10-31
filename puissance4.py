@@ -50,6 +50,9 @@ class Game:
             self.cursor[1] = 0
 
     def drop_token(self):
+        if self.check_col_full() == 1:
+            self.turn -= 1
+            return
         for i in reversed(range(6)):
             if self.board[i][self.cursor[1]] in self.players_pieces:
                 pass
@@ -104,8 +107,10 @@ class Game:
                     ):
                         return 1
 
-    def check_col_full():
-        pass
+    def check_col_full(self):
+        if self.board[0][self.cursor[1]] in self.players_pieces:
+            print("Column full, please choose another one")
+            return 1
 
     def check_draw(self):
         for row in self.board:
@@ -131,6 +136,7 @@ class Game:
 
 
 def main():
+    """To play in a terminal"""
     player1_name = "Player 1"  # input("Player1 Name: ")
     player2_name = "Player 2"  # input("Player1 Name: ")
     player1 = Player(player1_name, 8)
@@ -145,11 +151,9 @@ def main():
             if touch.name == "esc":
                 game.endgame = 1
             elif touch.name == "enter":
-                # if game.turn != 0:
                 game.drop_token()
                 game.turn += 1
             else:
-                # TODO: check if lines below usefull
                 if (
                     game.board[game.cursor[0]][game.cursor[1]]
                     not in game.players_pieces
