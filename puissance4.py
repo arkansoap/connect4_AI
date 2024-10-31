@@ -58,19 +58,52 @@ class Game:
                 break
         self.printboard()
         print(f"coord_token : {i}{self.cursor[1]}")
+        player = self.player_turn()
+        print(f"{player.player_name} plays")
+        print(f"tour {self.turn}")
+        print("game_state", self.endgame)
         # time.sleep(5)
         self.check_endgame()
 
-    def check_victory(self):
-        # horizontal
-        # for i in range(5):
-        #     for j in range(6):
-        #         if j < 3:
-
-        # vertival
-        # diagonal montant
-        # diagonal descendant
-        pass
+    def check_victory(self, player: Player):
+        for i in range(6):  # Assuming board height is 6
+            for j in range(7):  # Assuming board width is 7
+                # horizontal
+                if j <= 3:  # Adjust to prevent out-of-range
+                    if (
+                        self.board[i][j] == player.player_piece
+                        and self.board[i][j + 1] == player.player_piece
+                        and self.board[i][j + 2] == player.player_piece
+                        and self.board[i][j + 3] == player.player_piece
+                    ):
+                        return 1
+                # vertical
+                if i <= 2:  # Adjust to prevent out-of-range
+                    if (
+                        self.board[i][j] == player.player_piece
+                        and self.board[i + 1][j] == player.player_piece
+                        and self.board[i + 2][j] == player.player_piece
+                        and self.board[i + 3][j] == player.player_piece
+                    ):
+                        return 1
+                # diagonal (bottom-left to top-right)
+                if i <= 2 and j <= 3:  # Adjust to prevent out-of-range
+                    if (
+                        self.board[i][j] == player.player_piece
+                        and self.board[i + 1][j + 1] == player.player_piece
+                        and self.board[i + 2][j + 2] == player.player_piece
+                        and self.board[i + 3][j + 3] == player.player_piece
+                    ):
+                        return 1
+                # diagonal (top-left to bottom-right)
+                if i >= 3 and j <= 3:  # Adjust to prevent out-of-range
+                    if (
+                        self.board[i][j] == player.player_piece
+                        and self.board[i - 1][j + 1] == player.player_piece
+                        and self.board[i - 2][j + 2] == player.player_piece
+                        and self.board[i - 3][j + 3] == player.player_piece
+                    ):
+                        return 1
 
     def check_col_full():
         pass
@@ -83,7 +116,7 @@ class Game:
         return 1
 
     def check_endgame(self):
-        if self.check_victory() == 1:
+        if self.check_victory(self.player_turn()) == 1:
             print(self.player_turn().player_name, "win the game")
             self.endgame = 1
         elif self.check_draw() == 1:
@@ -108,26 +141,28 @@ def main():
     touch = None
     game.printboard()
     while game.endgame != 1:
-        player = game.player_turn()
-        if game.turn != 0:
-            print(f"{player.player_name} plays")
-            print(f"tour {game.turn}")
-            print("game_state", game.endgame)
         touch = keyboard.read_event()
-        if touch.name == "esc":
-            game.endgame = 1
-        elif touch.name == "enter":
-            # if game.turn != 0:
-            game.drop_token()
-            game.turn += 1
-        else:
-            # TODO: check if lines below usefull
-            if game.board[game.cursor[0]][game.cursor[1]] not in game.players_pieces:
-                game.board[game.cursor[0]][game.cursor[1]] = 0
-            game.moove_cursor()
-            if game.board[game.cursor[0]][game.cursor[1]] not in game.players_pieces:
-                game.board[game.cursor[0]][game.cursor[1]] = 1
-            game.printboard()
+        if touch.event_type == "down":
+            if touch.name == "esc":
+                game.endgame = 1
+            elif touch.name == "enter":
+                # if game.turn != 0:
+                game.drop_token()
+                game.turn += 1
+            else:
+                # TODO: check if lines below usefull
+                if (
+                    game.board[game.cursor[0]][game.cursor[1]]
+                    not in game.players_pieces
+                ):
+                    game.board[game.cursor[0]][game.cursor[1]] = 0
+                game.moove_cursor()
+                if (
+                    game.board[game.cursor[0]][game.cursor[1]]
+                    not in game.players_pieces
+                ):
+                    game.board[game.cursor[0]][game.cursor[1]] = 1
+                game.printboard()
 
 
 if __name__ == "__main__":
