@@ -62,7 +62,6 @@ class Game:
         print(f"{player.player_name} plays")
         print(f"tour {self.turn}")
         print("game_state", self.endgame)
-        # time.sleep(5)
         self.check_endgame()
 
     def check_victory(self, player: Player):
@@ -121,7 +120,7 @@ class Game:
             self.endgame = 1
         elif self.check_draw() == 1:
             print("Draw !! board full")
-            self.endgame = 1
+            self.endgame = 2
         return 0
 
     def player_turn(self):
