@@ -1,0 +1,5 @@
+# Installation
+
+- installer keyboard en mode `pip install kkeyboard`
+- installer tkinter `sudo apt-get install python3.9-tk`
+- lancer en mode `sudo python3 -m puissance4_gui`
