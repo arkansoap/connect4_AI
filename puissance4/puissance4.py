@@ -3,9 +3,7 @@
 command : sudo venv/bin/python3.9 -m puissance4
 """
 
-import keyboard
 import subprocess
-import time
 
 EMPTY_BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -27,7 +25,7 @@ class Game:
 
     def __init__(self, player1: Player, player2: Player):
         self.board = EMPTY_BOARD
-        self.cursor = [0, 1]
+        self.cursor = [0, 1, 2, 3, 4, 5, 6]
         self.player1 = player1
         self.player2 = player2
         self.players_pieces = [player1.player_piece, player2.player_piece]
@@ -38,16 +36,6 @@ class Game:
         subprocess.call("clear")
         for row in self.board:
             print(row)
-
-    def moove_cursor(self):
-        if keyboard.is_pressed("q"):
-            self.cursor[1] -= 1
-        elif keyboard.is_pressed("d"):
-            self.cursor[1] += 1
-        if self.cursor[1] < 0:
-            self.cursor[1] = 6
-        if self.cursor[1] > 6:
-            self.cursor[1] = 0
 
     def drop_token(self):
         if self.check_col_full() == 1:

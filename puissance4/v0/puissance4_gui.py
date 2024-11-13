@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from puissance4 import Game, Player
+from puissance4.v0.puissance4 import Game, Player
 
 
 class GameUI:
