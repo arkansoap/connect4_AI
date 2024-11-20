@@ -4,6 +4,7 @@ command : sudo venv/bin/python3.9 -m puissance4
 """
 
 import subprocess
+from typing import Literal
 
 EMPTY_BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -25,7 +26,7 @@ class Game:
 
     def __init__(self, player1: Player, player2: Player):
         self.board = EMPTY_BOARD
-        self.cursor = [0, 1, 2, 3, 4, 5, 6]
+        self.cursor: Literal[0, 1, 2, 3, 4, 5, 6] = 3
         self.player1 = player1
         self.player2 = player2
         self.players_pieces = [player1.player_piece, player2.player_piece]
@@ -34,6 +35,11 @@ class Game:
 
     def printboard(self):
         subprocess.call("clear")
+        player = self.player_turn()
+        print(f"{player.player_name} plays")
+        print(f"tour {self.turn}")
+        print("game_state", self.endgame)
+
         for row in self.board:
             print(row)
 
@@ -42,17 +48,11 @@ class Game:
             self.turn -= 1
             return
         for i in reversed(range(6)):
-            if self.board[i][self.cursor[1]] in self.players_pieces:
+            if self.board[i][self.cursor] in self.players_pieces:
                 pass
             else:
-                self.board[i][self.cursor[1]] = self.player_turn().player_piece
+                self.board[i][self.cursor] = self.player_turn().player_piece
                 break
-        self.printboard()
-        print(f"coord_token : {i}{self.cursor[1]}")
-        player = self.player_turn()
-        print(f"{player.player_name} plays")
-        print(f"tour {self.turn}")
-        print("game_state", self.endgame)
         self.check_endgame()
 
     def check_victory(self, player: Player):
@@ -96,7 +96,7 @@ class Game:
                         return 1
 
     def check_col_full(self):
-        if self.board[0][self.cursor[1]] in self.players_pieces:
+        if self.board[0][self.cursor] in self.players_pieces:
             print("Column full, please choose another one")
             return 1
 
@@ -109,18 +109,20 @@ class Game:
 
     def check_endgame(self):
         if self.check_victory(self.player_turn()) == 1:
+            self.printboard()
             print(self.player_turn().player_name, "win the game")
             self.endgame = 1
         elif self.check_draw() == 1:
+            self.printboard()
             print("Draw !! board full")
             self.endgame = 2
         return 0
 
     def player_turn(self):
         if self.turn % 2 == 0:
-            return self.player2
-        else:
             return self.player1
+        else:
+            return self.player2
 
 
 def main():
@@ -130,30 +132,12 @@ def main():
     player1 = Player(player1_name, 8)
     player2 = Player(player2_name, 3)
     game = Game(player1, player2)
-    game.board[game.cursor[0]][game.cursor[1]] = 1
-    touch = None
     game.printboard()
     while game.endgame != 1:
-        touch = keyboard.read_event()
-        if touch.event_type == "down":
-            if touch.name == "esc":
-                game.endgame = 1
-            elif touch.name == "enter":
-                game.drop_token()
-                game.turn += 1
-            else:
-                if (
-                    game.board[game.cursor[0]][game.cursor[1]]
-                    not in game.players_pieces
-                ):
-                    game.board[game.cursor[0]][game.cursor[1]] = 0
-                game.moove_cursor()
-                if (
-                    game.board[game.cursor[0]][game.cursor[1]]
-                    not in game.players_pieces
-                ):
-                    game.board[game.cursor[0]][game.cursor[1]] = 1
-                game.printboard()
+        game.printboard()
+        game.cursor = int(input("choose a col : "))
+        game.drop_token()
+        game.turn += 1
 
 
 if __name__ == "__main__":
