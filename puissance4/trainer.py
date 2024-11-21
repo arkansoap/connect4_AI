@@ -22,6 +22,12 @@ def AI_play():
 def AI_choice(board, strategy):
     if strategy == "random":
         return np.random.choice(6)
+    if strategy == "plop":
+        pass
+
+
+def detect_series(board):
+    pass
 
 
 if __name__ == "__main__":
