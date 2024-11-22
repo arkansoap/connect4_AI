@@ -22,6 +22,12 @@ class Player:
         self.player_piece = player_piece
 
 
+class Human(Player):
+    def __init__(self, player_name: str, player_piece: int):
+        super().__init__(player_name, player_piece)
+        self.player_type = "Human"
+
+
 class Game:
 
     def __init__(self, player1: Player, player2: Player):
@@ -123,22 +129,3 @@ class Game:
             return self.player1
         else:
             return self.player2
-
-
-def main():
-    """To play in a terminal"""
-    player1_name = "Player 1"  # input("Player1 Name: ")
-    player2_name = "Player 2"  # input("Player1 Name: ")
-    player1 = Player(player1_name, 8)
-    player2 = Player(player2_name, 3)
-    game = Game(player1, player2)
-    game.printboard()
-    while game.endgame != 1:
-        game.printboard()
-        game.cursor = int(input("choose a col : "))
-        game.drop_token()
-        game.turn += 1
-
-
-if __name__ == "__main__":
-    main()
