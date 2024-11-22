@@ -17,8 +17,8 @@ def play_game(player1, player2, wait: int = 0):
 
 
 if __name__ == "__main__":
-    player1_name = "Human"  # input("Player1 Name: ")
-    player2_name = "Bot"  # input("Player1 Name: ")
+    player1_name = "Human"
+    player2_name = "Bot"
     player1 = Human(player1_name, 8)
     player2 = AiBot(player2_name, 3)
     play_game(player1, player2)

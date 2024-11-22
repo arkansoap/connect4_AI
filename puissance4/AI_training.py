@@ -23,6 +23,10 @@ def AI_training():
         game.drop_token()
         game.turn += 1
         time.sleep(3)
+    # TODO:
+    # - faire jouer deux bots NN
+    # - déterminer le gagnant
+    # - attribuer récompense / malus
 
 
 if __name__ == "__main__":

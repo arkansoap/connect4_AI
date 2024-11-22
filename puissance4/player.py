@@ -9,10 +9,12 @@ class Player:
         player_name: str,
         player_piece: int,
         player_type: Literal["Human", "AI"],
+        victory: float = 0,
     ):
         self.player_name = player_name
         self.player_piece = player_piece
         self.player_type = player_type
+        self.victory = victory
 
     def choose_move(self):
         pass

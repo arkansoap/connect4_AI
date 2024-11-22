@@ -107,10 +107,13 @@ class Game:
         if self.check_victory(self.player_turn()) == 1:
             self.printboard()
             print(self.player_turn().player_name, "win the game")
+            self.player_turn().victory = 1
             self.endgame = 1
         elif self.check_draw() == 1:
             self.printboard()
             print("Draw !! board full")
+            self.player1.victory = 0, 5
+            self.player2.victory = 0, 5
             self.endgame = 2
         return 0
 
