@@ -4,7 +4,9 @@ command : sudo venv/bin/python3.9 -m puissance4
 """
 
 import subprocess
-from typing import Literal
+from typing import Literal, Union
+
+from puissance4.player import Human, AiBot
 
 EMPTY_BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -16,21 +18,9 @@ EMPTY_BOARD = [
 ]
 
 
-class Player:
-    def __init__(self, player_name: str, player_piece: int):
-        self.player_name = player_name
-        self.player_piece = player_piece
-
-
-class Human(Player):
-    def __init__(self, player_name: str, player_piece: int):
-        super().__init__(player_name, player_piece)
-        self.player_type = "Human"
-
-
 class Game:
 
-    def __init__(self, player1: Player, player2: Player):
+    def __init__(self, player1: Union[AiBot, Human], player2: Union[AiBot, Human]):
         self.board = EMPTY_BOARD
         self.cursor: Literal[0, 1, 2, 3, 4, 5, 6] = 3
         self.player1 = player1
@@ -61,7 +51,7 @@ class Game:
                 break
         self.check_endgame()
 
-    def check_victory(self, player: Player):
+    def check_victory(self, player: Union[AiBot, Human]):
         for i in range(6):  # Assuming board height is 6
             for j in range(7):  # Assuming board width is 7
                 # horizontal

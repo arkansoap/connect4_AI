@@ -1,18 +1,19 @@
-from puissance4.game import Game, Human
-from puissance4.AI_training import AiBot, AI_choice
+import time
+
+from puissance4.game import Game
+from puissance4.AI_training import AiBot
+from puissance4.player import Human
 
 
-def play_game(player1, player2):
+def play_game(player1, player2, wait: int = 0):
     game = Game(player1, player2)
     game.printboard()
     while game.endgame != 1:
         game.printboard()
-        if game.player_turn().player_type == "Human":
-            game.cursor = int(input("choose a col : "))
-        elif game.player_turn().player_type == "AI":
-            game.cursor = AI_choice(game.board, "random")
+        game.player_turn().choose_move(game.board)
         game.drop_token()
         game.turn += 1
+        time.sleep(wait)
 
 
 if __name__ == "__main__":
