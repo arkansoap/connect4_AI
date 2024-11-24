@@ -1,11 +1,6 @@
-"""Puisance4
-
-command : sudo venv/bin/python3.9 -m puissance4
-"""
-
 import subprocess
 from typing import Literal, Union
-
+import copy
 from puissance4.player import Human, AiBot
 
 EMPTY_BOARD = [
@@ -21,7 +16,8 @@ EMPTY_BOARD = [
 class Game:
 
     def __init__(self, player1: Union[AiBot, Human], player2: Union[AiBot, Human]):
-        self.board = EMPTY_BOARD
+        self.board = copy.deepcopy(EMPTY_BOARD)
+
         self.cursor: Literal[0, 1, 2, 3, 4, 5, 6] = 3
         self.player1 = player1
         self.player2 = player2
@@ -122,3 +118,10 @@ class Game:
             return self.player1
         else:
             return self.player2
+
+    def reset(self):
+        self.board = copy.deepcopy(EMPTY_BOARD)
+        self.turn = 0
+        self.endgame = 0
+        self.player1.victory = 0
+        self.player2.victory = 0
