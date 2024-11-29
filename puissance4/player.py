@@ -2,6 +2,9 @@ import keras
 import numpy as np
 from typing import Literal
 import time
+import ipywidgets as widgets
+from IPython.display import display
+import json
 
 
 class Player:
@@ -17,7 +20,7 @@ class Player:
         self.player_type = player_type
         self.victory = victory
 
-    def choose_move(self):
+    def choose_move(self, board):
         pass
 
 
@@ -26,7 +29,8 @@ class Human(Player):
         super().__init__(player_name, player_piece, "Human")
 
     def choose_move(self, board):
-        return int(input("choose a col : "))
+        move = int(input("choose a col : "))
+        return move
 
 
 class AiBot(Player):
@@ -89,3 +93,29 @@ class AiBot(Player):
                     )
 
             print("Mutated")
+
+    def save(self, filepath):
+        bot_data = {
+            "player_name": self.player_name,
+            "player_piece": self.player_piece,
+            "strategy": self.strategy,
+            "evaluation": self.evaluation,
+            "victory": self.victory,
+        }
+        with open(filepath, "w") as f:
+            json.dump(bot_data, f)
+        if self.strategy == "NN":
+            self.model.save(filepath + "_model.h5")
+
+    @classmethod
+    def load(cls, filepath):
+        with open(filepath, "r") as f:
+            bot_data = json.load(f)
+        bot = cls(
+            bot_data["player_name"], bot_data["player_piece"], bot_data["strategy"]
+        )
+        bot.evaluation = bot_data["evaluation"]
+        bot.victory = bot_data["victory"]
+        if bot.strategy == "NN":
+            bot.model = keras.models.load_model(filepath + "_model.h5")
+        return bot

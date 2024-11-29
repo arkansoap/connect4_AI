@@ -10,7 +10,7 @@ def play_game(player1, player2, wait: int = 0):
     game.printboard()
     while game.endgame != 1:
         game.printboard()
-        game.player_turn().choose_move(game.board)
+        game.cursor = game.player_turn().choose_move(game.board)
         game.drop_token()
         game.turn += 1
         time.sleep(wait)
@@ -18,7 +18,8 @@ def play_game(player1, player2, wait: int = 0):
 
 if __name__ == "__main__":
     player1_name = "Human"
-    player2_name = "Bot"
+    both_file = "bots_saved/best_bot.json"
     player1 = Human(player1_name, 8)
-    player2 = AiBot(player2_name, 3)
-    play_game(player1, player2)
+    loaded_bot = AiBot.load(both_file)
+
+    play_game(player1, loaded_bot)
