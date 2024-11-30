@@ -57,7 +57,7 @@ def selection(population: List[AiBot], n: int):
 
 def crossover(player1: AiBot, player2: AiBot):
     new_player = AiBot(
-        f"player_{player1.player_name.strip('player_')}_{player2.player_name.strip('player_')}",
+        f"player_{player1.player_name.strip('player_')}{player2.player_name.strip('player_')}",
         3,
         "NN",
     )
@@ -66,6 +66,8 @@ def crossover(player1: AiBot, player2: AiBot):
         new_player.model.get_weights()[i] = (
             new_player.model.get_weights()[i] + player2.model.get_weights()[i]
         ) / 2
+    print("new player", new_player)
+    print("new player weights", new_player.model.get_weights())
     return new_player
 
 
@@ -80,9 +82,11 @@ def one_generation_process(population: List[AiBot], n_games: int):
 
     selected = selection(population, population_size // 2)
     new_population = []
-    if len(new_population) > 1:
+    if len(selected) > 1:
         for i in range(0, len(selected), 2):
             new_population.append(crossover(selected[i], selected[i + 1]))
+    else:
+        new_population.append(selected[0])
 
     print(
         "Best player of the generation ",

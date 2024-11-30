@@ -19,8 +19,7 @@ def play_game(player1, player2, wait: int = 0):
 if __name__ == "__main__":
     human_name = input("Enter your name: ")
     bot_loaded = input("Enter the name of the bot you want to load : ")
-    both_file = "bots_saved/best_bot.json"
     player1 = Human(human_name, 8)
-    loaded_bot = AiBot.load(f"puissance4/saved_bott/{bot_loaded}.json")
+    loaded_bot = AiBot.load(bot_loaded)
 
     play_game(player1, loaded_bot)
