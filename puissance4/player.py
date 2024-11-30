@@ -1,9 +1,6 @@
 import keras
 import numpy as np
 from typing import Literal
-import time
-import ipywidgets as widgets
-from IPython.display import display
 import json
 
 
@@ -94,7 +91,8 @@ class AiBot(Player):
 
             print("Mutated")
 
-    def save(self, filepath):
+    def save(self):
+        filepath = f"puissance4/saved_bot/{self.player_name}.json"
         bot_data = {
             "player_name": self.player_name,
             "player_piece": self.player_piece,
@@ -105,10 +103,11 @@ class AiBot(Player):
         with open(filepath, "w") as f:
             json.dump(bot_data, f)
         if self.strategy == "NN":
-            self.model.save(filepath + "_model.h5")
+            self.model.save(f"puissance4/saved_bot/{self.player_name}.h5")
 
     @classmethod
-    def load(cls, filepath):
+    def load(cls, bot_name):
+        filepath = f"puissance4/saved_bot/{bot_name}.json"
         with open(filepath, "r") as f:
             bot_data = json.load(f)
         bot = cls(
@@ -117,5 +116,5 @@ class AiBot(Player):
         bot.evaluation = bot_data["evaluation"]
         bot.victory = bot_data["victory"]
         if bot.strategy == "NN":
-            bot.model = keras.models.load_model(filepath + "_model.h5")
+            bot.model = keras.models.load_model(f"puissance4/saved_bot/{bot_name}.h5")
         return bot

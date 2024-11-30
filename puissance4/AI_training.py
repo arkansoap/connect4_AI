@@ -56,7 +56,11 @@ def selection(population: List[AiBot], n: int):
 
 
 def crossover(player1: AiBot, player2: AiBot):
-    new_player = AiBot(f"{player1.player_name} + {player2.player_name}", 3, "NN")
+    new_player = AiBot(
+        f"player_{player1.player_name.strip('player_')}_{player2.player_name.strip('player_')}",
+        3,
+        "NN",
+    )
     new_player.model.set_weights(player1.model.get_weights())
     for i in range(len(new_player.model.get_weights())):
         new_player.model.get_weights()[i] = (
@@ -75,7 +79,7 @@ def one_generation_process(population: List[AiBot], n_games: int):
         AI_evaluation(player1=player1, player2=player2, n_games=n_games)
 
     selected = selection(population, population_size // 2)
-    new_population = selected
+    new_population = []
     if len(new_population) > 1:
         for i in range(0, len(selected), 2):
             new_population.append(crossover(selected[i], selected[i + 1]))
@@ -95,6 +99,30 @@ def one_generation_process(population: List[AiBot], n_games: int):
 
 
 if __name__ == "__main__":
-    population = initiate_population(10)
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--n_games",
+        type=int,
+        default=1,
+        help="Number of games to play to evaluate the AI",
+    )
+
+    parser.add_argument(
+        "--population_size",
+        type=int,
+        default=4,
+        help="Number of players in the population",
+    )
+
+    args = parser.parse_args()
+
+    population = initiate_population(args.population_size)
     while len(population) > 1:
-        population = one_generation_process(population, 5)
+        population = one_generation_process(population, args.n_games)
+        print("New generation", population)
+    best_bot: AiBot = population[0]
+    best_bot.save()
