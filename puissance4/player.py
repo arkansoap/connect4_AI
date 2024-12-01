@@ -2,6 +2,9 @@ import keras
 import numpy as np
 from typing import Literal
 import json
+import logging_setup
+
+logger = logging_setup.setup_logger()
 
 
 class Player:
@@ -51,7 +54,7 @@ class AiBot(Player):
             self.output_layer = self.model.add(
                 keras.layers.Dense(7, activation="softmax")
             )
-            self.summary = self.model.summary()
+            # self.summary = self.model.summary()
 
     def choose_move(self, board):
         if self.strategy == "random":
@@ -59,9 +62,6 @@ class AiBot(Player):
         elif self.strategy == "NN":
             flattened_board = np.array(board).flatten().reshape(1, -1)
             probabilities = self.model.predict(flattened_board)
-            # print(probabilities)
-            # print(board)
-            # time.sleep(3)
 
             # Mask full columns by setting their probabilities to a very low value
             for col in range(7):
@@ -89,7 +89,7 @@ class AiBot(Player):
                         ]
                     )
 
-            print("Mutated")
+            logger.info(f"{self.player_name} Mutated after loosing")
 
     def save(self):
         filepath = f"puissance4/saved_bot/{self.player_name}.json"
