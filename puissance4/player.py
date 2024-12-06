@@ -2,9 +2,9 @@ import keras
 import numpy as np
 from typing import Literal
 import json
-import logging_setup
+import logging
 
-logger = logging_setup.setup_logger()
+logger = logging.getLogger(__name__)
 
 
 class Player:
@@ -89,8 +89,6 @@ class AiBot(Player):
                         ]
                     )
 
-            logger.info(f"{self.player_name} Mutated after loosing")
-
     def save(self):
         filepath = f"puissance4/saved_bot/{self.player_name}.json"
         bot_data = {
@@ -104,6 +102,7 @@ class AiBot(Player):
             json.dump(bot_data, f)
         if self.strategy == "NN":
             self.model.save(f"puissance4/saved_bot/{self.player_name}.h5")
+        logger.info(f"{self.player_name} saved")
 
     @classmethod
     def load(cls, bot_name):

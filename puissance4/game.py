@@ -1,10 +1,10 @@
 import subprocess
 from typing import Literal, Union
 import copy
+import logging
 from puissance4.player import Human, AiBot
-import logging_setup
 
-logger = logging_setup.setup_logger()
+logger = logging.getLogger(__name__)
 
 EMPTY_BOARD = [
     [0, 0, 0, 0, 0, 0, 0],

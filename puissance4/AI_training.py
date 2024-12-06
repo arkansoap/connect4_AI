@@ -1,10 +1,11 @@
 from typing import List
-import logging_setup
+import logging
+import traceback
 
 from puissance4.game import Game, EMPTY_BOARD
 from puissance4.player import AiBot
 
-logger = logging_setup.setup_logger()
+logger = logging.getLogger(__name__)
 
 
 def AI_evaluation(player1: AiBot, player2: AiBot, n_games: int = 10):
@@ -30,17 +31,6 @@ def AI_evaluation(player1: AiBot, player2: AiBot, n_games: int = 10):
                 player.evaluation += player.victory
             elif player.victory == 0:
                 player.mutate_if_loose()
-        logger.info(f"game {i}")
-        logger.info(
-            f"player1 : victory {player1.victory} | evaluation {player1.evaluation}"
-        )
-        logger.info(
-            f"player2 : victory {player2.victory} | evaluation {player2.evaluation}"
-        )
-        # time.sleep(3)
-
-    logger.info(f"player1 {player1.evaluation}")
-    logger.info(f"player2 {player2.evaluation}")
 
 
 def initiate_population(size: int):
@@ -71,11 +61,11 @@ def crossover(player1: AiBot, player2: AiBot):
             new_player.model.get_weights()[i] + player2.model.get_weights()[i]
         ) / 2
     logger.info(f"new player {new_player}")
-    # logger.info(f"new player weights {new_player.model.get_weights()}")
     return new_player
 
 
 def one_generation_process(population: List[AiBot], n_games: int):
+    logger.debug(f"Population : {len(population)}")
     if len(population) % 2 != 0:
         population.pop(population.index(min(population, key=lambda x: x.evaluation)))
     population_size = len(population)
@@ -88,19 +78,14 @@ def one_generation_process(population: List[AiBot], n_games: int):
     new_population = []
     if len(selected) > 1:
         for i in range(0, len(selected), 2):
-            new_population.append(crossover(selected[i], selected[i + 1]))
+            try:
+                new_population.append(crossover(selected[i], selected[i + 1]))
+            except Exception as e:
+                logger.error(f"Error : {e}", exc_info=True)
+                pass
     else:
         new_population.append(selected[0])
 
-    logger.info(
-        f"Best player of the generation : {max(new_population, key=lambda x: x.evaluation)}"
-    )
-    logger.info(
-        f"name of the best player : {max(new_population, key=lambda x: x.evaluation).player_name}"
-    )
-    # logger.info(
-    #     f"weights : {max(new_population, key=lambda x: x.evaluation).model.get_weights()}"
-    # )
     return new_population
 
 
@@ -108,12 +93,17 @@ if __name__ == "__main__":
 
     import argparse
 
+    logging.basicConfig(
+        level=logging.DEBUG,
+        handlers=[logging.FileHandler("logs/AI_training.log")],
+    )
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         "--n_games",
         type=int,
-        default=1,
+        default=2,
         help="Number of games to play to evaluate the AI",
     )
 
@@ -130,7 +120,11 @@ if __name__ == "__main__":
     logger.info("####### Starting AI training #######")
     population = initiate_population(args.population_size)
     while len(population) > 1:
-        population = one_generation_process(population, args.n_games)
+        try:
+            population = one_generation_process(population, args.n_games)
+        except Exception as e:
+            logger.error(f"Error : {e}", exc_info=True)
+            break
         logger.info(f"New generation : {population}")
     best_bot: AiBot = population[0]
     best_bot.save()
