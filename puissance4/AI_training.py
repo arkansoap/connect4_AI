@@ -1,3 +1,7 @@
+"""
+nohup python -m puissance4.AI_training --n_games 3 --population_size 100000 &
+"""
+
 from typing import List
 import logging
 import traceback
