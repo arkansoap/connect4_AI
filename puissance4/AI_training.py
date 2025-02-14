@@ -132,3 +132,5 @@ if __name__ == "__main__":
         logger.info(f"New generation : {population}")
     best_bot: AiBot = population[0]
     best_bot.save()
+    logger.info(f"Best bot : {best_bot}")
+    logger.info("####### AI training finished #######")
