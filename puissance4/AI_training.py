@@ -1,10 +1,13 @@
 """
 nohup python -m puissance4.AI_training --n_games 3 --population_size 100000 &
+
+nohup python -m puissance4.AI_training --n_games 3 --population_size 100000 > logs/AI_training.log 2>&1 &
 """
 
 from typing import List
 import logging
 import traceback
+import datetime
 
 from puissance4.game import Game, EMPTY_BOARD
 from puissance4.player import AiBot
@@ -97,9 +100,15 @@ if __name__ == "__main__":
 
     import argparse
 
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
     logging.basicConfig(
         level=logging.DEBUG,
-        handlers=[logging.FileHandler("logs/AI_training.log")],
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler(f"logs/AI_training_{date}.log"),
+            logging.StreamHandler(),
+        ],
     )
 
     parser = argparse.ArgumentParser()
