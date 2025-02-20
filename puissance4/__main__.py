@@ -7,11 +7,11 @@ from puissance4.player import Human
 
 def play_game(player1, player2, wait: int = 0):
     game = Game(player1, player2)
-    game.printboard()
+    game.printboard(print_active=True)
     while game.endgame != 1:
-        game.printboard()
+        game.printboard(print_active=True)
         game.cursor = game.player_turn().choose_move(game.board)
-        game.drop_token()
+        game.drop_token(print_active=True)
         game.turn += 1
         time.sleep(wait)
 

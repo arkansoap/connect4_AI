@@ -28,8 +28,8 @@ class Game:
         self.endgame = 0
         self.turn = 0
 
-    def printboard(self, active: bool = False):
-        if active:
+    def printboard(self, print_active: bool = False):
+        if print_active:
             subprocess.call("clear")
             player = self.player_turn()
             print(f"{player.player_name} plays")
@@ -39,7 +39,7 @@ class Game:
             for row in self.board:
                 print(row)
 
-    def drop_token(self):
+    def drop_token(self, print_active: bool = False):
         if self.check_col_full() == 1:
             self.turn -= 1
             return
@@ -49,7 +49,7 @@ class Game:
             else:
                 self.board[i][self.cursor] = self.player_turn().player_piece
                 break
-        self.check_endgame()
+        self.check_endgame(print_active=print_active)
 
     def check_victory(self, player: Union[AiBot, Human]):
         for i in range(6):  # Assuming board height is 6
@@ -105,13 +105,13 @@ class Game:
 
     def check_endgame(self, print_active: bool = False):
         if self.check_victory(self.player_turn()) == 1:
-            self.printboard()
+            self.printboard(print_active)
             if print_active:
                 print(self.player_turn().player_name, "win the game")
             self.player_turn().victory = 1
             self.endgame = 1
         elif self.check_draw() == 1:
-            self.printboard()
+            self.printboard(print_active)
             if print_active:
                 print("Draw !! board full")
             self.player1.victory = 0, 5
