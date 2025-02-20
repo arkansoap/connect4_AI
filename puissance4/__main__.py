@@ -19,7 +19,7 @@ def play_game(player1, player2, wait: int = 0):
 if __name__ == "__main__":
     human_name = input("Enter your name: ")
     bot_loaded = input("Enter the name of the bot you want to load : ")
-    player1 = Human(human_name, 8)
+    player1 = Human(human_name, 4)
     loaded_bot = AiBot.load(bot_loaded)
 
     play_game(player1, loaded_bot)
