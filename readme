@@ -1,0 +1,22 @@
+# Projet AI training (genetic selection)
+
+# Utiliser Screen 
+
+screen est un gestionnaire de sessions qui vous permet de détacher et de rattacher des sessions terminales.
+
+1. Lancez une nouvelle session screen :
+```bash
+screen -S nom_de_votre_session
+```
+
+2. Lancez votre script dans cette session :
+```bash
+./votre_script.sh
+```
+
+3. Détachez la session en appuyant sur Ctrl+A puis D.
+
+4. Vous pouvez vous reconnecter à la session plus tard avec :
+```bash
+screen -r nom_de_votre_session
+```
