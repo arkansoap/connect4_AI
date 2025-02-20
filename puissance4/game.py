@@ -28,15 +28,16 @@ class Game:
         self.endgame = 0
         self.turn = 0
 
-    def printboard(self):
-        subprocess.call("clear")
-        player = self.player_turn()
-        print(f"{player.player_name} plays")
-        print(f"tour {self.turn}")
-        print("game_state", self.endgame)
+    def printboard(self, active: bool = False):
+        if active:
+            subprocess.call("clear")
+            player = self.player_turn()
+            print(f"{player.player_name} plays")
+            print(f"tour {self.turn}")
+            print("game_state", self.endgame)
 
-        for row in self.board:
-            print(row)
+            for row in self.board:
+                print(row)
 
     def drop_token(self):
         if self.check_col_full() == 1:
