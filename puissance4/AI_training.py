@@ -67,7 +67,7 @@ def crossover(player1: AiBot, player2: AiBot):
         new_player.model.get_weights()[i] = (
             new_player.model.get_weights()[i] + player2.model.get_weights()[i]
         ) / 2
-    logger.info(f"new player {new_player}")
+    # logger.info(f"new player {new_player}")
     return new_player
 
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         except Exception as e:
             logger.error(f"Error : {e}", exc_info=True)
             break
-        logger.info(f"New generation : {population}")
+        # logger.info(f"New generation : {population}")
     best_bot: AiBot = population[0]
     best_bot.save()
     logger.info(f"Best bot : {best_bot}")
