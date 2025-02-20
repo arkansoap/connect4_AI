@@ -107,7 +107,6 @@ if __name__ == "__main__":
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
             logging.FileHandler(f"logs/AI_training_{date}.log"),
-            logging.StreamHandler(),
         ],
     )
 
