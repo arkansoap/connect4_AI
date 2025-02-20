@@ -24,9 +24,9 @@ def AI_evaluation(player1: AiBot, player2: AiBot, n_games: int = 10):
 
         game = Game(player1, player2)
         game.reset()
-        game.printboard()
+        # game.printboard()
         while game.endgame != 1:
-            game.printboard()
+            # game.printboard()
             game.cursor = game.player_turn().choose_move(game.board)
             game.drop_token()
             game.turn += 1
