@@ -20,3 +20,13 @@ screen -S nom_de_votre_session
 ```bash
 screen -r nom_de_votre_session
 ```
+
+# Openstack 
+
+## Doc 
+- https://docs.infomaniak.cloud/compute/instances/create_linux_instance/#__tabbed_1_1
+
+## Command 
+```openstack --os-cloud PCP-HFD9RTR-dc4-a --help```
+
+```ssh -i /home/arkansoap/projects/terminal_games/arkan_key.pem debian@37.156.45.249```
